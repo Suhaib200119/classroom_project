@@ -23,7 +23,7 @@
       <p class="card-text">{{$classroom->section}}</p>
       <a href="{{route("show_classroom",$classroom->id)}}" class="btn btn-primary">show</a>
       <a href="{{route("edit_classroom",$classroom->id)}}" class="btn btn-secondary">edit</a>
-      <form action="{{route("delete_classroom",$classroom->id)}}" method="post">
+      <form style="display: inline" action="{{route("delete_classroom",$classroom->id)}}" method="post">
         @csrf
         @method("delete")
         <button type="submit" class="btn btn-danger">delete</button>

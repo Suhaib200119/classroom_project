@@ -110,6 +110,8 @@ class ClassroomsController extends Controller
      */
     public function destroy(string $id)
     {
+        $classroom=Classroom::findOrFail($id);
+        unlink(public_path("uploads/".$classroom->cover_image));
         Classroom::destroy($id);
         return redirect()->route("index_classroom");
     }
