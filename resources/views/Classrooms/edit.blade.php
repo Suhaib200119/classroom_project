@@ -34,7 +34,7 @@
         <img style="display: block" src="{{asset("uploads/$classroom->cover_image")}}" alt="" width="150px" height="150px">
         <div class="mb-3">
             <label for="formFile" class="form-label">Classroom Cover Image</label>
-            <input class="form-control" name="cover_image" type="file" id="formFile" required>
+            <input class="form-control" name="cover_image" type="file" id="formFile" >
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%">update</button>
