@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\TopicsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,3 +26,5 @@ Route::get("/classrooms/{id}/show",[ClassroomsController::class,"show"])->name("
 Route::get("/classrooms/{id}/edit",[ClassroomsController::class,"edit"])->name("edit_classroom");
 Route::put("/classrooms/{id}/update",[ClassroomsController::class,"update"])->name("update_classroom");
 Route::delete("classrooms/{id}/delete",[ClassroomsController::class,"destroy"])->name("delete_classroom");
+
+Route::resource("/topics",TopicsController::class);
