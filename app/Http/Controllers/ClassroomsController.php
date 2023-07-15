@@ -7,6 +7,7 @@ use App\Models\Classroom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ClassroomsController extends Controller
 {
@@ -33,6 +34,14 @@ class ClassroomsController extends Controller
     public function store(ClassroomsRequest $request)
     {
     $validation=$request->validated();
+    $request->validate(
+        [
+            "cover_image"=>["required",Rule::imageFile()],
+        ],
+        [
+            "required"=>":attribute is required!",
+        ]
+    );
     $classroom=new Classroom();
     $classroom->user_id=1;
     $classroom->name=$request->post("name");
@@ -85,6 +94,7 @@ class ClassroomsController extends Controller
     public function update(ClassroomsRequest $request, string $id)
     {
     $validation=$request->validated();
+ 
     $classroom=Classroom::findOrFail($id);
     $classroom->name=$request->post("name");
     $classroom->section=$request->post("section");
