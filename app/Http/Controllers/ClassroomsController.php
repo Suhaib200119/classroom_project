@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClassroomsRequest;
 use App\Models\Classroom;
-use Faker\Core\File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -31,8 +30,9 @@ class ClassroomsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ClassroomsRequest $request)
     {
+    $validation=$request->validated();
     $classroom=new Classroom();
     $classroom->user_id=1;
     $classroom->name=$request->post("name");
@@ -41,7 +41,7 @@ class ClassroomsController extends Controller
     $classroom->subject=$request->post("subject");
     $classroom->room=$request->post("room");
     $classroom->status=$request->post("status");
-    if($request->hasFile("cover_image")){
+    if($request->hasFile("cover_image")){ //  الشرط غير ضروري لأنه حقل إدخال الصورة إجباري
         $file=$request->file("cover_image");
         $path=$file->store("/covers","uploads");
         $classroom->cover_image=$path;
@@ -82,8 +82,9 @@ class ClassroomsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ClassroomsRequest $request, string $id)
     {
+    $validation=$request->validated();
     $classroom=Classroom::findOrFail($id);
     $classroom->name=$request->post("name");
     $classroom->section=$request->post("section");

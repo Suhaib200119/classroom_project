@@ -17,7 +17,7 @@
 <div class="row gy-5">
 @foreach ($classrooms as $classroom)
   <div class="card" style="width: 18rem; margin-right: 40px">
-    <img src="{{asset("uploads/$classroom->cover_image")}}" class="card-img-top" alt="...">
+    <img src="{{asset("uploads/$classroom->cover_image")}}" class="card-img-top" alt="..." height="250px">
     <div class="card-body">
       <h5 class="card-title">{{$classroom->name}}</h5>
       <p class="card-text">{{$classroom->section}}</p>
