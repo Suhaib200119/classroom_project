@@ -34,14 +34,6 @@ class ClassroomsController extends Controller
     public function store(ClassroomsRequest $request)
     {
     $validation=$request->validated();
-    $request->validate(
-        [
-            "cover_image"=>["required",Rule::imageFile()],
-        ],
-        [
-            "required"=>":attribute is required!",
-        ]
-    );
     $classroom=new Classroom();
     $classroom->user_id=1;
     $classroom->name=$request->post("name");

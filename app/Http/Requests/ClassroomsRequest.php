@@ -29,6 +29,9 @@ class ClassroomsRequest extends FormRequest
             "room"=>"nullable|string|max:191",
             "subject"=>"nullable|string|max:191",
             "status"=>"required|string",
+            "cover_image"=>[
+                $this->method()==="PUT"?"nullable":"required",
+                Rule::imageFile()],
         ];
     }
 

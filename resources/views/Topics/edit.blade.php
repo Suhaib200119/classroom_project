@@ -1,12 +1,26 @@
 @extends('Layouts.mater')
 @section('page-title', 'create topic')
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{$error}}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <form action="{{route("topics.update",$topic->id)}}" method="post">
         @csrf
         @method("put")
         <div class="form-group">
             <label for="topic_name">New Topic Name</label>
             <input type="text" name="name" class="form-control" id="topic_name" placeholder="Enter New Topic Name" value="{{$topic->name}}">
+            @error("name")
+                <p class="text-danger">
+                    {{$message}}
+                </p>
+            @enderror
         </div>
         <br>
 

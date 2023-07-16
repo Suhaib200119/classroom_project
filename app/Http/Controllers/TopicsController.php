@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TopicsRequset;
 use App\Models\Classroom;
 use App\Models\Topic;
 use Illuminate\Http\Request;
@@ -30,8 +31,9 @@ class TopicsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TopicsRequset $request)
     {
+        $validation=$request->validated();
         $topic = new Topic();
         $topic->name = $request->post("name");
         $topic->classroom_id = $request->post("classroom_id");
@@ -70,8 +72,9 @@ class TopicsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TopicsRequset $request, string $id)
     {
+        $validation=$request->validated();
         $topic = Topic::findOrFail($id);
         $topic->name = $request->post("name");
         $topic->classroom_id = $request->post("classroom_id");
