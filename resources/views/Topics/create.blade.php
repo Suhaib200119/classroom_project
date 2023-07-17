@@ -13,15 +13,7 @@
 @endif
     <form action="{{route("topics.store")}}" method="post">
         @csrf
-        <div class="form-group">
-            <label for="topic_name">Topic Name</label>
-            <input type="text" value="{{old("name")}}" name="name" class="form-control @error("name")
-                is-invalid
-            @enderror" id="topic_name" placeholder="Enter Topic Name">
-            @error("name")
-                <p class="text-danger">{{$message}}</p>
-            @enderror
-        </div>
+        <x-div-input type="text" name="name" label="Name" id="topic_name" placeholder="Topic Name"/>
         <br>
 
         <label for="classroom_name">Classroom Name</label>
