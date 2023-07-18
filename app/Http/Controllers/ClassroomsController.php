@@ -115,7 +115,12 @@ class ClassroomsController extends Controller
     {
         $classroom=Classroom::findOrFail($id);
         unlink(public_path("uploads/".$classroom->cover_image));
-        Classroom::destroy($id);
+        $count=Classroom::destroy($id);
+        if($count>0){
+            Session::flash("success","classroom deleted");
+        }else{
+            Session::flash("danger","classroom not deleted !");
+        }
         return redirect()->route("index_classroom");
     }
 }

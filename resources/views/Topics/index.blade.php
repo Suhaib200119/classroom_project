@@ -1,19 +1,12 @@
 @extends('Layouts.mater')
 @section('page-title', 'view all topics')
 @section('content')
-    @if (session()->has('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @elseif (session()->has('danger'))
-        <div class="alert alert-success" role="alert">
-            {{ session('danger') }}
-        </div>
-    @endif
-
+<x-index-alert class="alert-success" name="success"/>
+<x-index-alert class="alert-danger" name="danger"/>
+<br>
     <div class="row">
         @foreach ($topics as $topic)
-            <div class="card" style="width: 18rem; margin-right: 8px">
+            <div class="card" style="width: 18rem; margin-right: 8px;margin-left: 12px">
                 <div class="card-body">
                     <h5 class="card-title">{{ $topic->name }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted"> id {{ $topic->id }}</h6>

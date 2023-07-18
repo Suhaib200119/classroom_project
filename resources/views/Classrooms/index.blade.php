@@ -1,22 +1,14 @@
 @extends("Layouts.mater")
 @section("page-title","view all classrooms")
 @section("content")
-@if (session()->has("success"))
-  <div class="alert alert-success" role="alert">
-      {{session("success")}}
-    </div>
-
-@elseif(session()->has("danger"))
-<div class="alert alert-danger" role="alert">
-{{session("danger")}}
-</div>
-@endif
+<x-index-alert class="alert-success" name="success"/>
+<x-index-alert class="alert-danger" name="danger"/>
 <br>
 <br>
 
 <div class="row gy-5">
 @foreach ($classrooms as $classroom)
-  <div class="card" style="width: 18rem; margin-right: 40px">
+  <div class="card" style="width: 25rem; margin-right: 40px">
     <img src="{{asset("uploads/$classroom->cover_image")}}" class="card-img-top" alt="..." height="250px">
     <div class="card-body">
       <h5 class="card-title">{{$classroom->name}}</h5>

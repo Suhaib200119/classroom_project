@@ -1,35 +1,30 @@
 @extends('Layouts.mater')
 @section('page-title', 'create topic')
 @section('content')
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{$error}}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-    <form action="{{route("topics.update",$topic->id)}}" method="post">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <form action="{{ route('topics.update', $topic->id) }}" method="post">
         @csrf
-        @method("put")
+        @method('put')
         <div class="form-group">
-            <label for="topic_name">New Topic Name</label>
-            <input type="text" name="name" class="form-control" id="topic_name" placeholder="Enter New Topic Name" value="{{$topic->name}}">
-            @error("name")
-                <p class="text-danger">
-                    {{$message}}
-                </p>
-            @enderror
+            <x-c-label-input label-id="topic_name" label-value="Name" />
+            <input type="text" name="name" class="form-control" id="topic_name" placeholder="Enter New Topic Name"
+                value="{{ $topic->name }}">
+            <x-hint-error input-name="name" />
         </div>
         <br>
-
-        <label for="classroom_name">Classroom Name</label>
-        <select name="classroom_id"  class="form-select" aria-label="Default select example" id="classroom_name">
+        <x-c-label-input label-id="classroom_name" label-value="Classroom Name" />
+        <select name="classroom_id" class="form-select" aria-label="Default select example" id="classroom_name">
             @foreach ($classrooms as $classroom)
-                <option value="{{ $classroom->id }}" @if ($classroom->id==$topic->classroom_id)
-                    selected
-                @endif>{{ $classroom->name }}</option>
+                <option value="{{ $classroom->id }}" @if ($classroom->id == $topic->classroom_id) selected @endif>
+                    {{ $classroom->name }}</option>
             @endforeach
         </select>
         <br>

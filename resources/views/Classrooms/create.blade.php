@@ -2,16 +2,7 @@
 @section("page-title","create classroom")
 @section("content")
 
-@if ($errors->any())
-<div class="alert alert-danger">
-  <ul>
-    @foreach ($errors->all() as $error)
-      <li>{{$error}}</li>
-    @endforeach
-  </ul>
-</div>
-  
-@endif
+<x-validation-errors/>
 <form action="{{route("store_classroom")}}" method="post" enctype="multipart/form-data">
     @csrf
     <x-div-input type="text" name="name" label="Name" id="classroom_name" placeholder="Classroom Name"/>
