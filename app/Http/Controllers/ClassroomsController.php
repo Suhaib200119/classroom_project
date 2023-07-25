@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClassroomsRequest;
 use App\Models\Classroom;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -16,8 +17,18 @@ class ClassroomsController extends Controller
      */
     public function index()
     {
-        $classrooms=Classroom::all();
+        $classrooms=Classroom::withTrashed()->get();
         return view("Classrooms.index")->with("classrooms",$classrooms);
+    }
+
+    public function trashedClassrooms(){
+        $classrooms=Classroom::onlyTrashed()->get();
+        return view("Classrooms.trashedClassrooms",["classrooms"=>$classrooms]);
+    }
+    public function withOutTrashedClassrooms(){
+        $classrooms=Classroom::withoutTrashed()->get();
+        return view("Classrooms.withOutClassrooms",["classrooms"=>$classrooms]);
+
     }
 
     /**
@@ -63,7 +74,7 @@ class ClassroomsController extends Controller
      */
     public function show(string $id)
     {
-        $classroom=Classroom::findOrFail($id);
+        $classroom=Classroom::withTrashed()->findOrFail($id);
         return view("Classrooms.show",[
             "classroom"=>$classroom
         ]);
@@ -111,16 +122,33 @@ class ClassroomsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id) // soft delete
     {
-        $classroom=Classroom::findOrFail($id);
-        unlink(public_path("uploads/".$classroom->cover_image));
-        $count=Classroom::destroy($id);
-        if($count>0){
+        $classroom=Classroom::withoutTrashed()->findOrFail($id);
+        if($classroom->delete()){
             Session::flash("success","classroom deleted");
         }else{
             Session::flash("danger","classroom not deleted !");
         }
-        return redirect()->route("index_classroom");
+        return redirect()->route("withOutTrashed_classroom");
+    }
+
+    public function forceDelete(String $id){
+        $classroom=Classroom::onlyTrashed()->findOrFail($id);
+        unlink(public_path("uploads/".$classroom->cover_image));
+        if($classroom->forceDelete()){
+            Session::flash("success","classroom deleted");
+        }else{
+            Session::flash("danger","classroom not deleted !");
+        }
+        return redirect()->route("trashed_classroom");
+    }
+
+    public function restore(String $id){
+        $classroom=Classroom::onlyTrashed()->findOrFail($id);
+        $classroom->restore();
+        Session::flash("success","classroom restored");
+        return redirect()->route("withOutTrashed_classroom");
+
     }
 }
