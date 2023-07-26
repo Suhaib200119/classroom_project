@@ -14,11 +14,20 @@
                     <a href="{{ route('topics.show', $topic->id) }}" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                     <a href="{{ route('topics.edit', $topic->id) }}" class="btn btn-secondary"><i
                             class="bi bi-pencil-square"></i></a>
+                   
+                    @if ($topic->deleted_at==null)
                     <form style="display: inline" action="{{ route('topics.destroy', $topic->id) }}" method="post">
                         @csrf
                         @method('delete')
                         <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                     </form>
+                    @else
+                    <form style="display: inline" action="{{ route('delete_topic', $topic->id) }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-danger">force Delete</button>
+                    </form>
+                    @endif
 
                 </div>
             </div>

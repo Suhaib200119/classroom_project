@@ -15,7 +15,7 @@ class TopicsController extends Controller
      */
     public function index()
     {
-        $topics = Topic::all();
+        $topics = Topic::withTrashed()->get();
         return view("Topics.index", ["topics" => $topics]);
     }
 
@@ -24,8 +24,14 @@ class TopicsController extends Controller
      */
     public function create()
     {
-        $classrooms = Classroom::get(["name", "id"]);
+        
+        $classrooms = Classroom::withoutTrashed()->get(["name", "id"]);
+        if(count($classrooms)>0){
         return view("Topics.create")->with("classrooms", $classrooms);
+            
+        }else{
+            return back();
+        }
     }
 
     /**
@@ -33,7 +39,7 @@ class TopicsController extends Controller
      */
     public function store(TopicsRequset $request)
     {
-        $validation=$request->validated();
+        $validation = $request->validated();
         $topic = new Topic();
         $topic->name = $request->post("name");
         $topic->classroom_id = $request->post("classroom_id");
@@ -52,8 +58,12 @@ class TopicsController extends Controller
      */
     public function show(string $id)
     {
-        $topic = Topic::findOrFail($id);
-        return view("Topics.show")->with("topic",$topic);
+        $topic = Topic::withoutTrashed()->find($id);
+        if ($topic != null) {
+            return view("Topics.show")->with("topic", $topic);
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -61,12 +71,17 @@ class TopicsController extends Controller
      */
     public function edit(string $id)
     {
-        $classrooms = Classroom::get(["name", "id"]);
-        $topic = Topic::findOrFail($id);
-        return view("Topics.edit", [
-            "classrooms" => $classrooms,
-            "topic" => $topic,
-        ]);
+        $classrooms = Classroom::withoutTrashed()->get(["name", "id"]);
+        $topic = Topic::withoutTrashed()->find($id);
+        if($topic!=null){
+            return view("Topics.edit", [
+                "classrooms" => $classrooms,
+                "topic" => $topic,
+            ]);
+        }else{
+            return back();
+        }
+       
     }
 
     /**
@@ -74,7 +89,7 @@ class TopicsController extends Controller
      */
     public function update(TopicsRequset $request, string $id)
     {
-        $validation=$request->validated();
+        $validation = $request->validated();
         $topic = Topic::findOrFail($id);
         $topic->name = $request->post("name");
         $topic->classroom_id = $request->post("classroom_id");
@@ -99,6 +114,16 @@ class TopicsController extends Controller
             Session::flash("danger", "topic not deleted");
         }
 
+        return redirect()->route("topics.index");
+    }
+
+
+    public function forceDelete(String $id)
+    {
+        $topic = Topic::onlyTrashed()->findOrFail($id);
+        if ($topic->forceDelete()) {
+            Session::flash("success", "topic deleted");
+        }
         return redirect()->route("topics.index");
     }
 }

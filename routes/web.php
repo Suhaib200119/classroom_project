@@ -36,7 +36,10 @@ Route::get("classrooms/withOutTrashed",[ClassroomsController::class,"withOutTras
 Route::get("/classrooms/{id}",[ClassroomsController::class,"show"])->name("show_classroom");
 Route::delete("/classrooms/{id}/forceDelete",[ClassroomsController::class,"forceDelete"])->name("forceDelete_classroom");
 Route::put("classrooms/{id}/restore",[ClassroomsController::class,"restore"])->name("restore_classroom");
+
+
 Route::resource("/topics",TopicsController::class);
+Route::delete("/topics/{id}/forceDelete",[TopicsController::class,"forceDelete"])->name("delete_topic");
 
 
 
