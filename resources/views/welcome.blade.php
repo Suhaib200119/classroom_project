@@ -9,6 +9,13 @@
 <body>
    <center>
     Empty Page
+    <br>
+    <a href="{{route("login")}}">go to login page</a>
+    <br>
+    <a href="{{route("register")}}">go to register page</a>
    </center>
+
+  
+
 </body>
 </html>

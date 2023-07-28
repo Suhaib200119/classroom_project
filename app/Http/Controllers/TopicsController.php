@@ -6,6 +6,8 @@ use App\Http\Requests\TopicsRequset;
 use App\Models\Classroom;
 use App\Models\Topic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 
 class TopicsController extends Controller
@@ -15,7 +17,7 @@ class TopicsController extends Controller
      */
     public function index()
     {
-        $topics = Topic::withTrashed()->get();
+        $topics = Topic::withTrashed()->where("user_id",Auth::id())->get();
         return view("Topics.index", ["topics" => $topics]);
     }
 
@@ -24,7 +26,6 @@ class TopicsController extends Controller
      */
     public function create()
     {
-        
         $classrooms = Classroom::withoutTrashed()->get(["name", "id"]);
         if(count($classrooms)>0){
         return view("Topics.create")->with("classrooms", $classrooms);
@@ -43,11 +44,11 @@ class TopicsController extends Controller
         $topic = new Topic();
         $topic->name = $request->post("name");
         $topic->classroom_id = $request->post("classroom_id");
-        $topic->user_id = 1;
+        $topic->user_id = Auth::id();
         if ($topic->save()) {
-            Session::flash("success", "Topic insertion");
+            Session::flash("success", "تم إضافة الموضوع بنجاح");
         } else {
-            Session::flash("danger", "Topic not insertion");
+            Session::flash("danger", "لم تتم عملية إضافة الموضوع بنجاح");
         }
 
         return redirect()->route("topics.index");
@@ -58,7 +59,7 @@ class TopicsController extends Controller
      */
     public function show(string $id)
     {
-        $topic = Topic::withoutTrashed()->find($id);
+        $topic = Topic::withTrashed()->findOrFail($id);
         if ($topic != null) {
             return view("Topics.show")->with("topic", $topic);
         } else {
@@ -95,9 +96,9 @@ class TopicsController extends Controller
         $topic->classroom_id = $request->post("classroom_id");
         $topic->user_id = 1;
         if ($topic->save()) {
-            Session::flash("success", "Topic updated");
+            Session::flash("success", "تم تحديث الموضوع بنجاح");
         } else {
-            Session::flash("danger", "Topic not updated");
+            Session::flash("danger", "لم تتم عملية تحديث الفصل الدراسي بنجاح");
         }
 
         return redirect()->route("topics.index");
@@ -109,9 +110,9 @@ class TopicsController extends Controller
     public function destroy(string $id)
     {
         if (Topic::destroy($id) > 0) {
-            Session::flash("success", "topic deleted");
+            Session::flash("success", "تم حذف الفصل الدراسي مع إمكانية استرجاعه");
         } else {
-            Session::flash("danger", "topic not deleted");
+            Session::flash("danger", "لم تتم عملية الحذف بنجاح");
         }
 
         return redirect()->route("topics.index");
@@ -122,8 +123,15 @@ class TopicsController extends Controller
     {
         $topic = Topic::onlyTrashed()->findOrFail($id);
         if ($topic->forceDelete()) {
-            Session::flash("success", "topic deleted");
+            Session::flash("success", "نم حذف الموضوع بشكل نهائي");
         }
+        return redirect()->route("topics.index");
+    }
+
+
+    public function restore(String $id){
+        $topic=Topic::onlyTrashed()->findOrFail($id);
+        $topic->restore();
         return redirect()->route("topics.index");
     }
 }

@@ -28,7 +28,7 @@ class ClassroomsRequest extends FormRequest
             "subject"=>"nullable|string|max:191",
             "room"=>"nullable|string|max:191",
             "subject"=>"nullable|string|max:191",
-            "status"=>"required|string",
+            "status"=>"string",
             "cover_image"=>[
                 $this->method()==="PUT"?"nullable":"required",
                 Rule::imageFile()],
@@ -38,8 +38,10 @@ class ClassroomsRequest extends FormRequest
     public function messages(): array
     {
         return [
-            "required"=>":attribute is required!",
-            "max"=>"you must enter data less than :max",
+            // "required"=>":attribute required!",
+            "name.required"=>"الأسم مطلوب",
+            "max"=>"يجب عليك إدخال نص حروفه أقل من :max",
+            "cover_image.required"=>"يجب عليك تحميل صورة الغلاف"
         ];
     }
 }

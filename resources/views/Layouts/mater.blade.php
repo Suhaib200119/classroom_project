@@ -22,7 +22,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">{{Config("app.name")}}</a>
-                {{-- <a class="navbar-brand" href="#">{{Auth::user()->name}}</a> --}}
+                <a class="navbar-brand" href="#">Welcome {{Auth::user()->name}}</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -30,16 +30,17 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{route("withOutTrashed_classroom")}}">withOut Trashed classrooms</a>
                         </li>
-                        
+                         --}}
+                         <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{route("index_classroom")}}">classrooms</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{route("trashed_classroom")}}">trashed classrooms</a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{route("index_classroom")}}">all classrooms</a>
-                        </li> --}}
+                       
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{route("create_classroom")}}">create classroom</a>
                         </li>
@@ -53,6 +54,10 @@
                     <form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                    <form class="d-flex" action="{{route("logout")}}" method="post">
+                        @csrf
+                        <button class="btn btn-outline-success" type="submit">logout</button>
                     </form>
                 </div>
             </div>
