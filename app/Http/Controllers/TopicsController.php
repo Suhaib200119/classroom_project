@@ -110,7 +110,7 @@ class TopicsController extends Controller
     public function destroy(string $id)
     {
         if (Topic::destroy($id) > 0) {
-            Session::flash("success", "تم حذف الفصل الدراسي مع إمكانية استرجاعه");
+            Session::flash("success", "تم حذف الموضوع  مع إمكانية استرجاعه");
         } else {
             Session::flash("danger", "لم تتم عملية الحذف بنجاح");
         }
@@ -121,8 +121,8 @@ class TopicsController extends Controller
 
     public function forceDelete(String $id)
     {
-        $topic = Topic::onlyTrashed()->findOrFail($id);
-        if ($topic->forceDelete()) {
+        $isDeleted = Topic::where("id","=",$id)->forceDelete();
+        if ($isDeleted) {
             Session::flash("success", "نم حذف الموضوع بشكل نهائي");
         }
         return redirect()->route("topics.index");
@@ -132,6 +132,7 @@ class TopicsController extends Controller
     public function restore(String $id){
         $topic=Topic::onlyTrashed()->findOrFail($id);
         $topic->restore();
+        Session::flash("success", "نم إسترجاع الموضوع ");
         return redirect()->route("topics.index");
     }
 }

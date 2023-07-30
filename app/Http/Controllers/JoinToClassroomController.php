@@ -34,7 +34,7 @@ class JoinToClassroomController extends Controller
 
        if($isSaved){
         $classroom=Classroom::withTrashed()->findOrFail($id);
-        Session::flash("success","You Joind Into Classroom $classroom->name");
+        Session::flash("success","تم إنضمامك إلى الفصل  $classroom->name");
         return redirect()->route("show_classroom",$id);
        }else{
         return back();
@@ -48,8 +48,7 @@ class JoinToClassroomController extends Controller
        ->where("user_id",Auth::id())
        ->delete();
        if($count>0){
-        Session::flash("message","تم مغادرة الفصل بنجاح");
-        return back();
+        return response()->json(["message"=>"تم مغادرة الفصل بنجاح"],200);
        }
     }
 
@@ -59,7 +58,7 @@ class JoinToClassroomController extends Controller
         return view("Classrooms.classrooms_j_student",["classrooms"=>$classrooms]);
     }
 
-    public function classroomsTeacherr(){
+    public function classroomsTeacher(){
         $classrooms=DB::table("classrooms_users")
         ->where("user_id","=",Auth::id())->where("role","=","teacher")->get();
              return view("Classrooms.classrooms_j_teacher",["classrooms"=>$classrooms]);

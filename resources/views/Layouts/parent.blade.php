@@ -268,12 +268,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <p>جميع المواضيع</p>
                                         </a>
                                     </li>
-                                    {{-- <li class="nav-item">
-                                        <a href="" class="nav-link">
-                                            <i class="fa fa-circle-o nav-icon"></i>
-                                            <p>المواضيع المحذوفة</p>
-                                        </a>
-                                    </li> --}}
                                     <li class="nav-item">
                                         <a href="{{ route('topics.create') }}" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon"></i>
@@ -284,7 +278,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </li>
                                 <form  class="nav-item"  action="{{route("logout")}}" method="post">
                                     @csrf
-                                    {{-- <i class="fa fa-circle-o nav-icon"></i> --}}
                                     <button class="btn " style="wieth:100%;color:white" type="submit">logout</button>
                                 </form>
                         </ul>

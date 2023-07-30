@@ -42,4 +42,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // motitor
+    // تستخدم حتلى تقوم بعمل شيء اتريبوت في عملية التخزين في الداتابيز
+    // set{AttributeName}Attribute
+    public function setEmailAttribute($value){
+        $this->attributes["email"]=strtolower($value);
+    }
 }

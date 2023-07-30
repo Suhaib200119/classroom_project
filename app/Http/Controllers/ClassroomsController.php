@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClassroomsRequest;
 use App\Models\Classroom;
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,9 +50,10 @@ class ClassroomsController extends Controller
     {
         $validation = $request->validated();
         $classroom = new Classroom();
-        $classroom->user_id = 1;
+         // model في  event تم نقلهم إلى دالة  
+        // $classroom->user_id = Auth::id();
+        // $classroom->code = Str::random(10);
         $classroom->name = $request->post("name");
-        $classroom->code = Str::random(10);
         $classroom->section = $request->post("section");
         $classroom->subject = $request->post("subject");
         $classroom->room = $request->post("room");
@@ -63,7 +65,7 @@ class ClassroomsController extends Controller
         }
 
         if ($classroom->save()) {
-            Session::flash("success", "تم لإصافة الفصل الدراسي بنجاح");
+            Session::flash("success", "تم إضافة الفصل الدراسي بنجاح");
         } else {
             Session::flash("danger", "لم تتم عملية إضافة الفصل الدراسي بنجاح");
         }
@@ -132,22 +134,26 @@ class ClassroomsController extends Controller
     {
         $classroom = Classroom::withoutTrashed()->findOrFail($id);
         if ($classroom->delete()) {
-            Session::flash("success", "تم حذف الفصل الدراسي مع إمكانيه استرجاعه");
+            return response()->json([
+                "message"=>"تم حذف الفصل الدراسي مع إمكانيه استرجاعه",
+            ],200);
         } else {
-            Session::flash("danger", "لم تتم عملية الحذف بنجاح");
+            return response()->json([
+                "message"=>"لم تتم عملية الحذف بنجاح",
+            ],400);
         }
         return redirect()->route("index_classroom");
     }
 
     public function forceDelete(String $id)
     {
-        $classroom = Classroom::onlyTrashed()->findOrFail($id);
-        unlink(public_path("uploads/" . $classroom->cover_image));
-        if ($classroom->forceDelete()) {
-            Session::flash("success", "تم حذف الفصل الدراسي بنجاح");
-        } else {
-            Session::flash("danger", "لم تمم عملية الحذف بنجاح");
+        $isDeleted= Classroom::where("id","=",$id)->forceDelete();
+        // model في event تم  نقل الكود إالى دالة  
+        // unlink(public_path("uploads/" . $classroom->cover_image));
+        if ($isDeleted) {
+            return response()->json(["message"=>"نم حذف الفصل الدراسي بشكل نهائي"],200);
         }
+        
         return redirect()->route("trashed_classroom");
     }
 
@@ -158,6 +164,8 @@ class ClassroomsController extends Controller
         Session::flash("success", "تم استرجاع الفصل الدراسي");
         return redirect()->route("index_classroom");
     }
+
+    
 
     
 }
