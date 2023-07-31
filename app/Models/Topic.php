@@ -9,4 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Topic extends Model
 {
     use HasFactory , SoftDeletes;
+    public function classworks(){
+        return $this->hasMany(Classwork::class,"topic_id","id");
+    }
 }

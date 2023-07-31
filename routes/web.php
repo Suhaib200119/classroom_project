@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\ClassworkController;
 use App\Http\Controllers\JoinToClassroomController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TopicsController;
@@ -60,6 +61,14 @@ Route::delete("/classrooms/{id}/exit",[JoinToClassroomController::class,"exitFro
 Route::resource("/topics",TopicsController::class);
 Route::delete("/topics/{id}/forceDelete",[TopicsController::class,"forceDelete"])->name("delete_topic");
 Route::put("/topics/{id}/restore",[TopicsController::class,"restore"])->name("restore_topic");
+
+
+Route::resource("classrooms.classworks",ClassworkController::class);//->shallow();
+
+// Route::get("classrooms/{id}/classworks",[ClassworkController::class,"index"])->name("index_classworks");
+// Route::get("classrooms/{id}/classworks/create",[ClassworkController::class,"create"])->name("index_classworks");
+// Route::post("classrooms/{id}/classworks/create");
+
 
 
 

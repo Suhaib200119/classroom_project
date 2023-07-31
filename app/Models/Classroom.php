@@ -13,11 +13,7 @@ use Illuminate\Support\Str;
 class Classroom extends Model
 {
     use HasFactory, SoftDeletes;
-    //acceccors 
-    // تقوم بتطبيق شيء معين على الاتريبوت في جميع الاماكن
-    // مثل جعل حروف الاسم كبيرة
-
-    // شروط تسمية الاكسيسور get{Attribute Name}Attribute
+   
     public function getNameAttribute($value)
     {
         return strtoupper($value);
@@ -31,14 +27,7 @@ class Classroom extends Model
     //     }
     // }
 
-    // هنا بعمل اكسيسور ل الروات
-    //    public function getUrlAttribute(){
-    //         return route("show_classroom",$this->id);
-    //     }
-
-    // motitor
-    // تستخدم حتلى تقوم بعمل شيء اتريبوت في عملية التخزين في الداتابيز
-    // set{AttributeName}Attribute
+    
     public function setSectionAttribute($value)
     {
         $this->attributes["section"] = strtolower($value);
@@ -46,11 +35,16 @@ class Classroom extends Model
 
     protected static function booted()
     {
-        
-
         //  model في observer ربط 
         static::observe(ClassroomObserver::class);
-
        
+    }
+
+    
+    public function classworks(){
+        return $this->hasMany(Classwork::class,"classroom_id","id");
+    }
+    public function topics(){
+        return $this->hasMany(Topic::class,"classroom_id","id");
     }
 }

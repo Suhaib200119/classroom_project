@@ -14,6 +14,7 @@
                     <h5 class="card-title">{{ $classroom->name }}</h5>
                     <p class="card-text">{{ $classroom->section }}</p>
                     <a href="{{ route('show_classroom', $classroom->id) }}" class="btn btn-primary">عرض</a>
+                    <a href="{{ route('classrooms.classworks.index', $classroom->id) }}" class="btn btn-info" style="color: white" >أعمال الفصل</a>
                     <a href="{{ route('edit_classroom', $classroom->id) }}" class="btn btn-secondary">تعديل</a>
                     <button onclick="confirmDeleteItem_softDelete('{{$classroom->id}}')" class="btn btn-danger">حذف</button>
 
