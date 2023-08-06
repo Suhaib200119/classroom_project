@@ -4,6 +4,8 @@
 @section("small-title",$classroom->name)
 @section("content")
 <div class="container">
+  <x-index-alert name="success" class="alert-success"/>
+
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
           إضافة عمل
@@ -80,7 +82,6 @@
     </div>
   </div>
    @endforeach
-  
   </div>
 </div>
 @endsection

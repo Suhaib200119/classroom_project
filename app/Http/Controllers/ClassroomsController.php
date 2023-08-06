@@ -67,6 +67,11 @@ class ClassroomsController extends Controller
 
         if ($classroom->save()) {
             Session::flash("success", "تم إضافة الفصل الدراسي بنجاح");
+             DB::table("classrooms_users")->insert([
+                "classroom_id" => $classroom->id,
+                "user_id" => Auth::id(),
+                "role" => "teacher"
+            ]);
         } else {
             Session::flash("danger", "لم تتم عملية إضافة الفصل الدراسي بنجاح");
         }
@@ -164,6 +169,18 @@ class ClassroomsController extends Controller
         $classroom->restore();
         Session::flash("success", "تم استرجاع الفصل الدراسي");
         return redirect()->route("index_classroom");
+    }
+
+    public function people($id){
+        $classroom=Classroom::withoutTrashed()->findOrFail($id);
+        $teachers=$classroom->teachers()->get();
+        $students=$classroom->students()->get();
+        return view("Classrooms.people",[
+            "classroom"=>$classroom,
+            "teachers"=>$teachers,
+            "students"=>$students
+        ]);
+
     }
 
     

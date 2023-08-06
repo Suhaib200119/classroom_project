@@ -20,4 +20,10 @@ class Classwork extends Model
     public function topic(){
         return $this->belongsTo(Topic::class,"topic_id","id");
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class)->withPivot(
+            ["grade","submitted_at","status","created_at"]
+        )->using(ClassworkUser::class);
+    }
 }

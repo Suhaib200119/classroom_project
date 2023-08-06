@@ -225,33 +225,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                 </ul>
                             </li>
-                            <li class="nav-item has-treeview menu-open">
-                                <a href="" class="nav-link active">
-                                    <i class="nav-icon fa fa-dashboard"></i>
-                                    <p>
-                                        الفصول الدراسية المنضم إليها
-                                        <i class="right fa fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-
-                                        
-                                        <a href="{{ route('myClassrooms_student') }}"
-                                            class="nav-link">
-                                            <i class="fa fa-circle-o nav-icon"></i>
-                                            <p>ك طالب</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('myClassrooms_teacher') }}" 
-                                        class="nav-link">
-                                            <i class="fa fa-circle-o nav-icon"></i>
-                                            <p>ك معلم</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                          
                             <li class="nav-item has-treeview menu-open">
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fa fa-dashboard"></i>

@@ -47,14 +47,13 @@ Route::get("/classrooms/trashed",[ClassroomsController::class,"trashedClassrooms
 Route::get("/classrooms/{id}",[ClassroomsController::class,"show"])->name("show_classroom");
 Route::delete("/classrooms/{id}/forceDelete",[ClassroomsController::class,"forceDelete"])->name("forceDelete_classroom");
 Route::put("/classrooms/{id}/restore",[ClassroomsController::class,"restore"])->name("restore_classroom");
+Route::get("/clasrooms/{id}/people",[ClassroomsController::class,"people"])->name("people_classroom");
 
 
 // Join To Classroom Controller
 Route::get("/classrooms/{id}/create",[JoinToClassroomController::class,"joinToClassroomCreate"])->middleware("signed")->name("join_Classroom_create");
 Route::post("/classrooms/{id}/join",[JoinToClassroomController::class,"joinToClassroomStore"])->name("join_Classroom_store");
-Route::get("/classrooms/student/join",[JoinToClassroomController::class,"classroomsStudent"])->name("myClassrooms_student");
-Route::get("/classrooms/teacher/join",[JoinToClassroomController::class,"classroomsTeacher"])->name("myClassrooms_teacher");
-Route::delete("/classrooms/{id}/exit",[JoinToClassroomController::class,"exitFromClassroom"])->name("exitFromClassroom");
+Route::delete("/classrooms/{classroom_id}/exit/{user_id}",[JoinToClassroomController::class,"exitFromClassroom"])->name("exitFromClassroom");
 
 
 

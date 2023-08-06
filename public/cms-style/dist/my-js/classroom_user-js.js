@@ -1,4 +1,5 @@
-function confirmExitFromClassroom(id) {
+function confirmExitFromClassroom(classroom_id,user_id) {
+    console.log(classroom_id,user_id);
     Swal.fire({
         title: 'هل أنت متأكد',
         text: "لن يكون بإمكانك رؤية مهام الفصل بعد مغادرته",
@@ -10,17 +11,16 @@ function confirmExitFromClassroom(id) {
         cancelButtonText:"إلغاء",
     }).then((result) => {
         if (result.isConfirmed) {
-            exitFromClassroom(id);
+            exitFromClassroom(classroom_id,user_id);
 
         }
     })
 }
 
-function exitFromClassroom(id) {
-    const routeFormat = `/classrooms/${id}/exit`;
+function exitFromClassroom(classroom_id,user_id) {
+    const routeFormat = `/classrooms/${classroom_id}/exit/${user_id}`;
     axios.delete(routeFormat)
         .then(function (response) {
-            document.getElementById(id).remove();
             Swal.fire({
                 position: 'center',
                 icon: 'success',
@@ -28,5 +28,6 @@ function exitFromClassroom(id) {
                 showConfirmButton: false,
                 timer: 1500
               });
+            document.getElementById(user_id).remove();
         });
 }
