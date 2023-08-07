@@ -7,6 +7,7 @@ use App\Models\Classwork;
 use App\Models\ClassworkUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class ClassworkController extends Controller
@@ -92,7 +93,8 @@ class ClassworkController extends Controller
             Session::flash("danger", "يجب عليك تحديد الاشخاص الذي سيظهر لهم العمل");
             return back();
         }
-        $classwork = new Classwork();
+        DB::transaction(function () use($request,$classroom,$idsUsers) {
+            $classwork = new Classwork();
         $classwork->title = $request->post("title");
         $classwork->description = $request->post("description");
         $classwork->user_id = Auth::id();
@@ -103,13 +105,15 @@ class ClassworkController extends Controller
         $classwork->published_at=$request->post("published_at");
         // $classwork->options=$request()->post("options");
         $classwork->save();
-        
+        // $classwork->users()->attach($request->input("std"));
         foreach ($idsUsers as $id) {
             $classwork_user = new ClassworkUser();
             $classwork_user->user_id = $id;
             $classwork_user->classwork_id = $classwork->id;
             $classwork_user->save();
         }
+        });
+        
        Session::flash("success", "تم إضافة العمل بنجاح");
         return redirect()->route("classrooms.classworks.index", $classroom->id);
     }
