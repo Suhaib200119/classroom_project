@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
     font-family: Vazir;
     src: url('../fonts/Vazir.eot');
     src: url('../fonts/Vazir.eot?#iefix') format('embedded-opentype'),
@@ -56,7 +56,7 @@
     url('../fonts/Vazir-Black.woff') format('woff'),
     url('../fonts/Vazir-Black.ttf') format('truetype');
     font-weight: 900;
-}
+} */
 
 /*---------------------------------- End of fonts ---------------------------------- */
 

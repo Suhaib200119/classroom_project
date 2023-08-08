@@ -15,31 +15,58 @@
             <p class="card-text">
                 {{ $urlJoinPage }}
             </p>
-            @foreach ($posts as $post)
-            <p>published by : {{ $post->user->name }} , {{ $post->post_content }}
-             {{ $post->created_at->diffForHumans() }}</p>
-             <p>التعليقات</p>
-             @foreach ($post->comments as $comment)
-               <p>{{$comment->content}}</p>
-             @endforeach
+        </div>
+        <form action="{{ route('addPost_classroom', $classroom->id) }}" method="post">
+            @csrf
+            <x-div-input style="display: inline-block;width: 90%;margin-right: 16px" type="text" name="post_content"
+                label="المنشور" id="post" placeholder="قم بكتابة المنشور" />
+            <button class="btn btn-primary" style="width: 8%">نشر</button>
+        </form>
+    </div>
+    <div class="card mb_3" style="padding: 8px">
+        @foreach ($posts as $key => $post)
+            <nav class="navbar bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" >
+                        <img src="{{asset("uploads/".$post->user->user_image)}}" width="30" height="24" class="d-inline-block align-text-top">
+                        {{ $post->user->name }}
+                    </a>
+                    <span>
+                        {{ $post->created_at->diffForHumans() }}
+                    </span>
+                </div>
+            </nav>
+            <p class="container-fluid">
+                {{ $post->post_content }}
+            </p>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapse{{ $key }}" aria-expanded="false"
+                aria-controls="collapse{{ $key }}">
+                عرض التعليقات
+            </button>
+            <br>
+            <div class="collapse" id="collapse{{ $key }}">
+                <ul class="list-group">
+                    <h4>التعليقات</h4>
+                    @foreach ($post->comments as $comment)
+                        <li class="list-group-item">
+                          {{$comment->content }} : {{$comment->user->name }} 
+                          <span style="float: left">{{$comment->created_at->diffForHumans()}}</span>
+                        </li>
+                    @endforeach
+                </ul>
                 <form action="{{ route('comments.store') }}" method="post">
-                  @csrf
-                  <input type="hidden" name="id" value="{{$post->id}}">
-                  <input type="hidden" name="type" value="Post">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $post->id }}">
+                    <input type="hidden" name="type" value="Post">
                     <div>
-                        <x-div-input type="text" name="content" id="content" label="التعليق"
-                            placeholder="قم بكتابة التعليق" />
-                        <button type="submit" class="btn btn-primary">تعليق</button>
+                        <x-div-input style="display: inline-block;width: 90%" type="text" name="content" id="content"
+                            label="التعليق" placeholder="قم بكتابة التعليق" />
+                        <button type="submit" class="btn btn-primary" style="width: 9%">تعليق</button>
                     </div>
                 </form>
-            @endforeach
+            </div>
             <hr>
-            <form action="{{ route('addPost_classroom', $classroom->id) }}" method="post">
-                @csrf
-                <x-div-input type="text" name="post_content" label="المنشور" id="post"
-                    placeholder="قم بكتابة المنشور" />
-                <button class="btn btn-primary">نشر</button>
-            </form>
-        </div>
+        @endforeach
     </div>
 @endsection
