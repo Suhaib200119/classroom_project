@@ -13,20 +13,24 @@
                     <th scope="col">اسم المستخدم</th>
                     <th scope="col">البريد الإلكتروني</th>
                     <th scope="col">الصفة</th>
-                    <th scope="col">العمليات</th>
+                    @if ($owner == 'yes')
+                        <th scope="col">العمليات</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
                 @foreach ($teachers as $teacher)
-                    <tr id="{{$teacher->id }}">
-                        <th scope="row" >{{ $teacher->id }}</th>
+                    <tr id="{{ $teacher->id }}">
+                        <th scope="row">{{ $teacher->id }}</th>
                         <td>{{ $teacher->name }}</td>
                         <td>{{ $teacher->email }}</td>
                         <td>{{ $teacher->pivot->role }}</td>
-                        @if (Auth::id() != $teacher->id)
-                            <td><button class="btn btn-danger"
-                                    onclick="confirmExitFromClassroom({{ $teacher->pivot->classroom_id }},{{ $teacher->id }})">حذف</button>
-                            </td>
+                        @if ($owner == 'yes')
+                            @if ($teacher->id != Auth::id())
+                                <td><button class="btn btn-danger"
+                                        onclick="confirmExitFromClassroom({{ $teacher->pivot->classroom_id }},{{ $teacher->id }})">حذف</button>
+                                </td>
+                            @endif
                         @endif
                     </tr>
                 @endforeach
@@ -43,7 +47,9 @@
                     <th scope="col">اسم المستخدم</th>
                     <th scope="col">البريد الإلكتروني</th>
                     <th scope="col">الصفة</th>
-                    <th>العمليات</th>
+                    @if ($owner == 'yes')
+                        <th scope="col">العمليات</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -53,9 +59,12 @@
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->email }}</td>
                         <td>{{ $student->pivot->role }}</td>
-                        <td><button class="btn btn-danger"
-                                onclick="confirmExitFromClassroom({{ $student->pivot->classroom_id }},{{ $student->id }})">حذف</button>
-                        </td>
+                        @if ($owner == 'yes')
+                            <td>
+                                <button class="btn btn-danger"
+                                    onclick="confirmExitFromClassroom({{ $student->pivot->classroom_id }},{{ $student->id }})">حذف</button>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

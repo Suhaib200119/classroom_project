@@ -72,4 +72,9 @@ class Classroom extends Model
     {
         return $this->hasMany(Topic::class, "classroom_id", "id");
     }
+
+    public function posts(){
+            return $this->hasMany(Post::class,"classroom_id","id");
+        }
+
 }

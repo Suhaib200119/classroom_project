@@ -35,6 +35,7 @@
       <div class="accordion-body">
         <strong> {{$assignment->description}}</strong>
       </div>
+      <a class="btn btn-primary" href="{{route("classrooms.classworks.show",[$classroom,$assignment])}}">عرض</a>
     </div>
   </div>
    @endforeach
@@ -57,6 +58,7 @@
       <div class="accordion-body">
         <strong> {{$material->description}}</strong>
       </div>
+      <a class="btn btn-primary" href="{{route("classrooms.classworks.show",[$classroom,$material])}}">عرض</a>
     </div>
   </div>
    @endforeach
@@ -79,6 +81,7 @@
       <div class="accordion-body">
         <strong> {{$question->description}}</strong>
       </div>
+      <a class="btn btn-primary" href="{{route("classrooms.classworks.show",[$classroom,$question])}}">عرض</a>
     </div>
   </div>
    @endforeach

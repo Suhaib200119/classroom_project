@@ -123,7 +123,10 @@ class ClassworkController extends Controller
      */
     public function show(Classroom $classroom, Classwork $classwork)
     {
-        //
+        return view("classworks.show",[
+            "classroom"=>$classroom,
+            "classwork"=>$classwork,
+        ]);
     }
 
     /**

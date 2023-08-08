@@ -50,4 +50,24 @@ class User extends Authenticatable
     public function setEmailAttribute($value){
         $this->attributes["email"]=strtolower($value);
     }
+
+  // return only all users
+  public function classrooms()
+  {
+      return $this->belongsToMany(
+          Classroom::class, // related model
+          "classrooms_users", // pivot table
+          "user_id", // fk for current model in pivot table
+          "classroom_id", // fk for related model in pivot table
+          "id", // pk for current model
+          "id" // pk for related model
+      )->withPivot(["role","classroom_id"]); // تكتب اسماء الاعمدة اللي بدك تجيبها من الجدول الوسيط
+  }
+  // [wherePivot] use to make condition on relation method 
+    public function comments(){
+        return $this->hasMany(Comment::class,"user_id","id");
+    }
+    public function posts(){
+        return $this->hasMany(Post::class,"user_id","id");
+    }
 }

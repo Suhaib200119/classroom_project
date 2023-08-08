@@ -14,6 +14,14 @@
       <p class="card-text">
         {{$urlJoinPage}}
       </p>
+      @foreach ($posts as $post)
+          <p>{{$post->post_content}} {{$post->user->name}} {{$post->created_at->diffForHumans()}}</p>
+      @endforeach
+      <form action="{{route("addPost_classroom",$classroom->id)}}" method="post">
+        @csrf
+        <x-div-input type="text" name="post_content" label="المنشور" id="post" placeholder="قم بكتابة المنشور"/>
+        <button class="btn btn-primary">نشر</button>
+      </form>
     </div>
   </div> 
 @endsection

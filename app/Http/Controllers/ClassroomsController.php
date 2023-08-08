@@ -51,7 +51,7 @@ class ClassroomsController extends Controller
     {
         $validation = $request->validated();
         $classroom = new Classroom();
-         // model في  event تم نقلهم إلى دالة  
+        // model في  event تم نقلهم إلى دالة  
         // $classroom->user_id = Auth::id();
         // $classroom->code = Str::random(10);
         $classroom->name = $request->post("name");
@@ -67,10 +67,11 @@ class ClassroomsController extends Controller
 
         if ($classroom->save()) {
             Session::flash("success", "تم إضافة الفصل الدراسي بنجاح");
-             DB::table("classrooms_users")->insert([
+            DB::table("classrooms_users")->insert([
                 "classroom_id" => $classroom->id,
                 "user_id" => Auth::id(),
-                "role" => "teacher"
+                "role" => "teacher",
+                "owner"=>"yes"
             ]);
         } else {
             Session::flash("danger", "لم تتم عملية إضافة الفصل الدراسي بنجاح");
@@ -84,12 +85,14 @@ class ClassroomsController extends Controller
     public function show(string $id)
     {
         $classroom = Classroom::withTrashed()->findOrFail($id);
+        $posts=$classroom->posts()->latest()->get();
         $urlJoinPage = URL::signedRoute("join_Classroom_create", [
             "id" => $id,
             "code" => $classroom->code
         ]);
         return view("Classrooms.show", [
             "classroom" => $classroom,
+            "posts"=>$posts,
             "urlJoinPage" => $urlJoinPage,
         ]);
     }
@@ -141,25 +144,25 @@ class ClassroomsController extends Controller
         $classroom = Classroom::withoutTrashed()->findOrFail($id);
         if ($classroom->delete()) {
             return response()->json([
-                "message"=>"تم حذف الفصل الدراسي مع إمكانيه استرجاعه",
-            ],200);
+                "message" => "تم حذف الفصل الدراسي مع إمكانيه استرجاعه",
+            ], 200);
         } else {
             return response()->json([
-                "message"=>"لم تتم عملية الحذف بنجاح",
-            ],400);
+                "message" => "لم تتم عملية الحذف بنجاح",
+            ], 400);
         }
         return redirect()->route("index_classroom");
     }
 
     public function forceDelete(String $id)
     {
-        $isDeleted= Classroom::where("id","=",$id)->forceDelete();
+        $isDeleted = Classroom::where("id", "=", $id)->forceDelete();
         // model في event تم  نقل الكود إالى دالة  
         // unlink(public_path("uploads/" . $classroom->cover_image));
         if ($isDeleted) {
-            return response()->json(["message"=>"نم حذف الفصل الدراسي بشكل نهائي"],200);
+            return response()->json(["message" => "نم حذف الفصل الدراسي بشكل نهائي"], 200);
         }
-        
+
         return redirect()->route("trashed_classroom");
     }
 
@@ -171,19 +174,26 @@ class ClassroomsController extends Controller
         return redirect()->route("index_classroom");
     }
 
-    public function people($id){
-        $classroom=Classroom::withoutTrashed()->findOrFail($id);
-        $teachers=$classroom->teachers()->get();
-        $students=$classroom->students()->get();
-        return view("Classrooms.people",[
-            "classroom"=>$classroom,
-            "teachers"=>$teachers,
-            "students"=>$students
-        ]);
-
+    public function people($id)
+    {
+       $obj = DB::table("classrooms_users")
+            ->where("user_id", "=", Auth::id())
+            ->where("classroom_id", "=", $id)->first();
+        if ($obj) {
+            $owner=$obj->owner;
+            $classroom = Classroom::withoutTrashed()->findOrFail($id);
+            $teachers = $classroom->teachers()->get();
+            $students = $classroom->students()->get();
+            return view("Classrooms.people", [
+                "classroom" => $classroom,
+                "teachers" => $teachers,
+                "students" => $students,
+                "owner"=>$owner
+            ]);
+        }else{
+            return redirect()->route("index_classroom");
+        }
     }
-
-    
 
     
 }

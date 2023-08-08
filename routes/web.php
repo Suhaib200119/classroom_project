@@ -4,10 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\ClassworkController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\JoinToClassroomController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\TopicsController;
-use App\Models\Classroom;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,13 +50,12 @@ Route::get("/classrooms/{id}",[ClassroomsController::class,"show"])->name("show_
 Route::delete("/classrooms/{id}/forceDelete",[ClassroomsController::class,"forceDelete"])->name("forceDelete_classroom");
 Route::put("/classrooms/{id}/restore",[ClassroomsController::class,"restore"])->name("restore_classroom");
 Route::get("/clasrooms/{id}/people",[ClassroomsController::class,"people"])->name("people_classroom");
-
-
+Route::post("/classrooms/{id}/post",[PostController::class,"store"])->name("addPost_classroom");
 // Join To Classroom Controller
 Route::get("/classrooms/{id}/create",[JoinToClassroomController::class,"joinToClassroomCreate"])->middleware("signed")->name("join_Classroom_create");
 Route::post("/classrooms/{id}/join",[JoinToClassroomController::class,"joinToClassroomStore"])->name("join_Classroom_store");
 Route::delete("/classrooms/{classroom_id}/exit/{user_id}",[JoinToClassroomController::class,"exitFromClassroom"])->name("exitFromClassroom");
-
+Route::get("/classrooms/join/myClassrooms",[JoinToClassroomController::class,"myClassroom"])->name("my_classroom");
 
 
 Route::resource("/topics",TopicsController::class);
@@ -62,13 +63,9 @@ Route::delete("/topics/{id}/forceDelete",[TopicsController::class,"forceDelete"]
 Route::put("/topics/{id}/restore",[TopicsController::class,"restore"])->name("restore_topic");
 
 
-Route::resource("classrooms.classworks",ClassworkController::class);//->shallow();
+Route::resource("/classrooms.classworks",ClassworkController::class);//->shallow();
 
-// Route::get("classrooms/{id}/classworks",[ClassworkController::class,"index"])->name("index_classworks");
-// Route::get("classrooms/{id}/classworks/create",[ClassworkController::class,"create"])->name("index_classworks");
-// Route::post("classrooms/{id}/classworks/create");
-
-
+Route::resource("/comments", CommentController::class);
 
 
 });
