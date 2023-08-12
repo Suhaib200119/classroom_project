@@ -86,6 +86,8 @@ class ClassworkController extends Controller
                 "title" => ["required", "string", "max:255"],
                 "description" => ["nullable", "string"],
                 "topic_id" => ["required", "int", "exists:topics,id"],
+                "grade"=>["required_if:types,assignment"],
+                "due"=>["required_if:types,assignment","after:published_at"]
             ],
         );
         $idsUsers = $request->post("std");
@@ -94,7 +96,7 @@ class ClassworkController extends Controller
             return back();
         }
         DB::transaction(function () use($request,$classroom,$idsUsers) {
-            $classwork = new Classwork();
+        $classwork = new Classwork();
         $classwork->title = $request->post("title");
         $classwork->description = $request->post("description");
         $classwork->user_id = Auth::id();
@@ -103,7 +105,13 @@ class ClassworkController extends Controller
         $classwork->types = $request->post("types");
         $classwork->status=$request->post("status");
         $classwork->published_at=$request->post("published_at");
-        // $classwork->options=$request()->post("options");
+        $options_json=json_encode(
+            [
+                "grade"=>$request->post("grade"),
+                "due"=>$request->post("due")
+            ]
+        );
+        $classwork->options=$options_json;
         $classwork->save();
         // $classwork->users()->attach($request->input("std"));
         foreach ($idsUsers as $id) {

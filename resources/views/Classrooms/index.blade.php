@@ -12,6 +12,10 @@
 @section('content')
     <x-index-alert class="alert-success" name="success" />
     <x-index-alert class="alert-danger" name="danger" />
+    <form action="{{URL::current()}}" method="get">
+        <input class="form-control" type="text" name="search">
+        <button class="btn btn-primary">find</button>
+      </form>
     <div class="row">
         @foreach ($classrooms as $classroom)
             <div id="{{ $classroom->id }}" class="card mb-3" style="width: 25rem; padding:0px;margin:8px">

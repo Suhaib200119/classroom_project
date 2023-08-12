@@ -19,12 +19,16 @@ class ClassroomsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $classrooms = Classroom::withoutTrashed()->where("user_id", Auth::id())->get();
-        return view("Classrooms.index")->with("classrooms", $classrooms);
+        
+        $classrooms = Classroom::withoutTrashed()
+        ->where("user_id", Auth::id());
+        if ($request->has("search")){
+            $classrooms->where("name","LIKE","%$request->search%");
+        }
+        return view("Classrooms.index")->with("classrooms", $classrooms->get());
     }
-
     public function trashedClassrooms()
     {
         $classrooms = Classroom::onlyTrashed()->get();

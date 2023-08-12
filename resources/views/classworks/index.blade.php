@@ -5,7 +5,6 @@
 @section("content")
 <div class="container">
   <x-index-alert name="success" class="alert-success"/>
-
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
           إضافة عمل
@@ -16,7 +15,7 @@
           <li><a class="dropdown-item" href="{{ route('classrooms.classworks.create', [$classroom->id,"type"=>"question"]) }}">نشر سؤال</a></li>
         </ul>
       </div>
-    
+   
     <br>
     {{-- التكاليف --}}
 <div class="accordion" id="accordionExample">
