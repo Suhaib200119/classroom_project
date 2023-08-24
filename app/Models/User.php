@@ -61,7 +61,7 @@ class User extends Authenticatable
           "classroom_id", // fk for related model in pivot table
           "id", // pk for current model
           "id" // pk for related model
-      )->withPivot(["role","classroom_id"]); // تكتب اسماء الاعمدة اللي بدك تجيبها من الجدول الوسيط
+      )->withPivot(["role","classroom_id","created_at"]); // تكتب اسماء الاعمدة اللي بدك تجيبها من الجدول الوسيط
   }
   // [wherePivot] use to make condition on relation method 
     public function comments(){
@@ -69,5 +69,13 @@ class User extends Authenticatable
     }
     public function posts(){
         return $this->hasMany(Post::class,"user_id","id");
+    }
+
+    public function submissions(){
+        return $this->hasMany(Submission::class);
+    }
+
+    public function classworks(){
+        return $this->belongsToMany(Classwork::class);
     }
 }

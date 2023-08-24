@@ -5,18 +5,20 @@
 @section("content")
 <div class="container">
   <x-index-alert name="success" class="alert-success"/>
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-          إضافة عمل
-        </button>
-        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-          <li><a class="dropdown-item" href="{{ route('classrooms.classworks.create', [$classroom->id,"type"=>"assignment"]) }}">تكليف</a></li>
-          <li><a class="dropdown-item" href="{{ route('classrooms.classworks.create', [$classroom->id,"type"=>"material"]) }}">نشر مادة علمية</a></li>
-          <li><a class="dropdown-item" href="{{ route('classrooms.classworks.create', [$classroom->id,"type"=>"question"]) }}">نشر سؤال</a></li>
-        </ul>
-      </div>
-   
-    <br>
+  @can("create",["App\Models\Classwork",$classroom])
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+      إضافة عمل
+    </button>
+    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+      <li><a class="dropdown-item" href="{{ route('classrooms.classworks.create', [$classroom->id,"type"=>"assignment"]) }}">تكليف</a></li>
+      <li><a class="dropdown-item" href="{{ route('classrooms.classworks.create', [$classroom->id,"type"=>"material"]) }}">نشر مادة علمية</a></li>
+      <li><a class="dropdown-item" href="{{ route('classrooms.classworks.create', [$classroom->id,"type"=>"question"]) }}">نشر سؤال</a></li>
+    </ul>
+  </div>
+  @endcan
+<br>
+    
     {{-- التكاليف --}}
 <div class="accordion" id="accordionExample">
 @if (count($assignments)>0)

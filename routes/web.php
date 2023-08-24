@@ -7,6 +7,7 @@ use App\Http\Controllers\ClassworkController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\JoinToClassroomController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\TopicsController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +67,9 @@ Route::put("/topics/{id}/restore",[TopicsController::class,"restore"])->name("re
 Route::resource("/classrooms.classworks",ClassworkController::class);//->shallow();
 
 Route::resource("/comments", CommentController::class);
+
+
+Route::post("classworks/{id}/submissions",[SubmissionController::class,"store"])->name("submissions.store");
 
 
 });

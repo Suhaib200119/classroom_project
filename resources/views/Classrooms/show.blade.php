@@ -15,6 +15,8 @@
             <p class="card-text">
                 {{ $urlJoinPage }}
             </p>
+            <a href="{{ route('classrooms.classworks.index', $classroom->id) }}" class="btn btn-info"
+                style="color: white">أعمال الفصل</a>
         </div>
         <form action="{{ route('addPost_classroom', $classroom->id) }}" method="post">
             @csrf

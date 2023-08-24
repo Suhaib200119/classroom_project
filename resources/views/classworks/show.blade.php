@@ -14,9 +14,39 @@
             <button class="btn btn-primary">تعليق</button>
         </form>
     </div>
-    @foreach ($classwork->comments as $comment)
+  @foreach ($classwork->comments as $comment)
     <h3>{{$comment->content}}</h3>
     <h3>{{$comment->created_at->diffForHumans()}}</h3>
   @endforeach
+  <hr>
+  <hr>
+  @can("addSubmission","App\Models\Classwork")
+  @if ($submissions->count()<=0)
+  <form  action="{{route("submissions.store",$classwork->id)}}" method="post" enctype="multipart/form-data" >
+    @csrf
+    <div class="mb-3">
+        <label for="files" class="form-label">قم برفع الملفات</label>
+        <input class="form-control @error("files")
+          is-invalid
+        @enderror" name="files[]" type="file" id="files" multiple>
+        <x-hint-error input-name="files"/>
+      </div>
+    <button type="submit" class="btn btn-primary">تسليم</button>
+  </form>
+  @else
+  <ul>
+    @foreach ($submissions as $sub)
+    <li>
+      <a href="uploads/{{$sub->content}}">File {{$loop->iteration}}</a>
+    </li>
+    @endforeach
+  </ul>
+  
+  @endif
+  @if (session("success"))
+    <div class="alert alert-success">{{session("success")}}</div>
+  @endif
+  @endcan
+
 </div>
 @endsection
