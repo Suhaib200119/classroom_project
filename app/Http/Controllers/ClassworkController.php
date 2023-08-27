@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ClassworkCreated;
 use App\Models\Classroom;
 use App\Models\Classwork;
 use App\Models\ClassworkUser;
@@ -151,6 +152,7 @@ class ClassworkController extends Controller
                 $classwork_user->classwork_id = $classwork->id;
                 $classwork_user->save();
             }
+            ClassworkCreated::dispatch($classwork);
         });
 
         Session::flash("success", "تم إضافة العمل بنجاح");

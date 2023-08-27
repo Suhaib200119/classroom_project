@@ -42,4 +42,5 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ asset('cms-style/dist/my-js/classroom-js.js') }}"></script>
+  
 @endsection
