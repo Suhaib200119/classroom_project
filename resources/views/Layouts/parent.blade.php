@@ -18,7 +18,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('cms-style/dist/adminlte/css/adminlte.min.css') }}">
     <!-- Google Font: Source Sans Pro -->
-    <link href="{{ asset('cms-style/https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}"
+    <link href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700') }}"
         rel="stylesheet">
     <!-- bootstrap rtl -->
     <link rel="stylesheet" href="{{ asset('cms-style/dist/adminlte/css/bootstrap-rtl.min.css') }}">
@@ -33,6 +33,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('css')
     <style>
         a {
@@ -257,6 +258,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </li>
                                 </ul>
                             </li>
+                            {{-- start notifications --}}
+                            <x-user-notifications-menu count="10"/>
+                          
+                            {{-- end notifications --}}
                                 <form  class="nav-item"  action="{{route("logout")}}" method="post">
                                     @csrf
                                     <button class="btn " style="wieth:100%;color:white" type="submit">logout</button>
@@ -331,4 +336,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="{{ asset('cms-style/dist/adminlte/js/adminlte.min.js') }}"></script>
     @yield('js')
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+    <script>
+    
+        var userId={{Auth::id()}}
+
+    </script>
+    @vite(["resources/js/app.js"])
 </body>

@@ -78,4 +78,14 @@ class User extends Authenticatable
     public function classworks(){
         return $this->belongsToMany(Classwork::class);
     }
+
+    // public function routeNotificationForMail( $notification = null)
+    // {
+    //     return $this->email;
+    // }
+
+    // public function routeNotificationForVonage( $notification = null)
+    // {
+    //     return $this->mobile;
+    // }
 }

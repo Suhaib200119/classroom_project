@@ -50,3 +50,9 @@
 
 </div>
 @endsection
+
+@section("js")
+<script>
+  const user_id={{$classwork->user_id}};
+</script>
+@endsection

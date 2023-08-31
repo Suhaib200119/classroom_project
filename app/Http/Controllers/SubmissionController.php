@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AddSubmissionEvent;
 use App\Models\Classwork;
 use App\Models\ClassworkUser;
 use App\Models\Submission;
@@ -23,8 +24,8 @@ class SubmissionController extends Controller
         $assigned = $classwork->users()->where("user_id", Auth::id())->exists();
         if (!$assigned) {
             abort(403);
-        }
-        DB::transaction(function () use($id,$classwork,$request) {
+        }else{
+            $isSaved=false;
             foreach ($request->file("files") as $file) {
                 $path = $file->store("/submissions/{$classwork->title}", "uploads");
                 $submission = new Submission();
@@ -32,19 +33,25 @@ class SubmissionController extends Controller
                 $submission->classwork_id = $id;
                 $submission->content = $path;
                 $submission->content_type = "file";
+                $isSaved=$submission->save();
             }
-            if ($submission->save()) {
-                ClassworkUser::where([
+            if ($isSaved) {
+              ClassworkUser::where([
                     "user_id"=>Auth::id(),
                     "classwork_id"=>$id
                 ])->update(
                     [
-                        "status" => "submitted",
-                        "submitted_at" => now(),
+                        "status"=>"submitted",
+                    "submitted_at"=>now()
                     ]
                 );
+                AddSubmissionEvent::dispatch($classwork,Auth::user());
             }
-        });
+        }
+        
+        // DB::transaction(function () use($id,$classwork,$request) {
+           
+        // });
       
         return back()->with("success", "Work Submitted");
     }

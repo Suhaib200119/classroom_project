@@ -91,8 +91,8 @@
 @endsection
 @section("js")
 <script>
-  const classroomId={{$classroom->id}};
+ const classroomId={{$classroom->id}};
 </script>
-@vite(["resources/js/app.js"])
+{{-- @vite(["resources/js/app.js"]) --}}
 @endsection
     

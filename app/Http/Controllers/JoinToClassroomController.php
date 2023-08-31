@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\JoinToClassroomEvent;
 use App\Models\Classroom;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class JoinToClassroomController extends Controller
         if ($isSaved) {
             $classroom = Classroom::withTrashed()->findOrFail($id);
             Session::flash("success", "تم إنضمامك إلى الفصل  $classroom->name");
+            JoinToClassroomEvent::dispatch(Auth::user(),$classroom);
             return redirect()->route("show_classroom", $id);
         } else {
             return back();

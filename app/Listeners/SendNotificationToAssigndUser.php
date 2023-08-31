@@ -3,11 +3,13 @@
 namespace App\Listeners;
 
 use App\Events\ClassworkCreated;
-use App\Models\Stream;
+use App\Models\User;
+use App\Notifications\NewClassworkNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Notification;
 
-class PostInClassroomStream
+class SendNotificationToAssigndUser
 {
     /**
      * Create the event listener.
@@ -22,11 +24,12 @@ class PostInClassroomStream
      */
     public function handle(ClassworkCreated $event): void
     {
-        $classwork = $event->classwork;
-        $stream=new Stream();
-        $stream->classroom_id=$classwork->classroom->id;
-        $stream->user_id=$classwork->user_id;
-        $stream->content="There is new classwork in ".$classwork->classroom->name." classroom";
-        $isSaved= $stream->save();
+
+        Notification::send(
+            $event->classwork->users,
+            new NewClassworkNotification($event->classwork)
+        );
+
+
     }
 }

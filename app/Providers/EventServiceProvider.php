@@ -2,8 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\AddSubmissionEvent;
 use App\Events\ClassworkCreated;
+use App\Events\JoinToClassroomEvent;
+use App\Listeners\AddSubmissionListener;
+use App\Listeners\JoinToClassroomListener;
 use App\Listeners\PostInClassroomStream;
+use App\Listeners\SendNotificationToAssigndUser;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,7 +27,15 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         ClassworkCreated::class=>[
-            PostInClassroomStream::class
+            PostInClassroomStream::class,
+            SendNotificationToAssigndUser::class
+        ],
+
+        AddSubmissionEvent::class=>[
+            AddSubmissionListener::class
+        ],
+        JoinToClassroomEvent::class=>[
+            JoinToClassroomListener::class
         ]
     ];
 

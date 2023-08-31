@@ -21,6 +21,7 @@ function exitFromClassroom(classroom_id,user_id) {
     const routeFormat = `/classrooms/${classroom_id}/exit/${user_id}`;
     axios.delete(routeFormat)
         .then(function (response) {
+            document.getElementById(classroom_id).remove();
             Swal.fire({
                 position: 'center',
                 icon: 'success',
@@ -28,6 +29,6 @@ function exitFromClassroom(classroom_id,user_id) {
                 showConfirmButton: false,
                 timer: 1500
               });
-            document.getElementById(user_id).remove();
+            
         });
 }

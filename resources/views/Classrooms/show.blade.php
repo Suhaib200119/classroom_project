@@ -72,3 +72,8 @@
         @endforeach
     </div>
 @endsection
+@section("js")
+    <script>
+        const ownerClassroomId={{$classroom->user_id}};
+    </script>
+@endsection
