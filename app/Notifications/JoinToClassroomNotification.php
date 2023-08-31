@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\DatabaseMessage;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Notification;
 
 class JoinToClassroomNotification extends Notification
@@ -30,7 +31,7 @@ class JoinToClassroomNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ["database","broadcast","mail"];
+        return ["database","broadcast","mail","vonage"];
     }
 
     /**
@@ -61,6 +62,12 @@ class JoinToClassroomNotification extends Notification
             "body"=>"the ".$this->user->name." joined into ".$this->classroom->name." classroom",
         ]
     );
+    }
+
+    public function toVonage(object $notifiable): VonageMessage{
+        $vonage=new VonageMessage();
+        $vonage->content("Hello ".$notifiable->name." ,The ".$this->user->name." joined into ".$this->classroom->name." classroom");
+        return $vonage;
     }
 
     /**

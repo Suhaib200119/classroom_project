@@ -84,8 +84,8 @@ class User extends Authenticatable
     //     return $this->email;
     // }
 
-    // public function routeNotificationForVonage( $notification = null)
-    // {
-    //     return $this->mobile;
-    // }
+    public function routeNotificationForVonage($notification=null): string
+    {
+        return "972592369923";//$this->phone_number
+    }
 }

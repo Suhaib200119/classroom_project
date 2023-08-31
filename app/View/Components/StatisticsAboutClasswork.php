@@ -2,18 +2,20 @@
 
 namespace App\View\Components;
 
+use App\Models\Classwork;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class testCom extends Component
+class StatisticsAboutClasswork extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public Classwork $classwork;
+    public function __construct($id)
     {
-        //
+        $this->classwork=Classwork::find($id);
     }
 
     /**
@@ -21,6 +23,6 @@ class testCom extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.test-com');
+        return view('components.statistics-about-classwork');
     }
 }

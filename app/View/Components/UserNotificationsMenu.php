@@ -14,7 +14,6 @@ class UserNotificationsMenu extends Component
      */
     public $notifications;
     public $unreadNotificationsCount;
-
     public function __construct($count=10)
     {
         $user=Auth::user();

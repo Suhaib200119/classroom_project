@@ -43,8 +43,8 @@ class NewClassworkNotification extends Notification
         //     $via[]="mail";
         // }
 
-        //"mail",
-        return ["mail","database","broadcast","vonage"]; // channels name
+   
+        return ["mail","database","broadcast"]; // channels name
     }
 
     /**
