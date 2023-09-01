@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Models\Classroom;
 use App\Models\Classwork;
 use App\Models\User;
+use App\Policies\ClassroomPolicy;
 use App\Policies\ClassworkPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -20,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Classwork::class=>ClassworkPolicy::class,
+        Classroom::class=>ClassroomPolicy::class,
     ];
 
     /**

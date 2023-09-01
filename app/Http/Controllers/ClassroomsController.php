@@ -89,6 +89,7 @@ class ClassroomsController extends Controller
     public function show(string $id)
     {
         $classroom = Classroom::withTrashed()->findOrFail($id);
+        $this->authorize("showClassroom",$classroom);
         $posts=$classroom->posts()->latest()->get();
         $urlJoinPage = URL::signedRoute("join_Classroom_create", [
             "id" => $id,

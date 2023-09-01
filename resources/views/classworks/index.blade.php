@@ -33,26 +33,9 @@
                 <h1>التكاليف</h1>
             @endif
             @foreach ($assignments as $assignment)
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse{{ $assignment->id }}" aria-expanded="true"
-                            aria-controls="collapseOne">
-                            {{ $assignment->title }}
-                        </button>
-                    </h2>
-                    <div id="collapse{{ $assignment->id }}" class="accordion-collapse collapse show"
-                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <strong> {{ $assignment->description }}</strong>
-                            <br>
-                        <x-statistics-about-classwork id="{{$assignment->id}}"/>
-
-                        </div>
-                        <a class="btn btn-primary"
-                            href="{{ route('classrooms.classworks.show', [$classroom, $assignment]) }}">عرض</a>
-                    </div>
-                </div>
+            {{-- start component classwork-card --}}
+            <x-classwork-card id="{{$assignment->id}}"/>
+            {{-- end component classwork-card --}}
             @endforeach
 
         </div>
@@ -63,24 +46,7 @@
             <h1>المواد العلمية</h1>
         @endif
         @foreach ($materials as $material)
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse{{ $material->id }}" aria-expanded="true" aria-controls="collapseOne">
-                        {{ $material->title }}
-                    </button>
-                </h2>
-                <div id="collapse{{ $material->id }}" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong> {{ $material->description }}</strong>
-                        <br>
-                        <x-statistics-about-classwork id="{{$material->id}}"/>
-                    </div>
-                    <a class="btn btn-primary"
-                        href="{{ route('classrooms.classworks.show', [$classroom, $material]) }}">عرض</a>
-                </div>
-            </div>
+        <x-classwork-card id="{{$material->id}}"/>
         @endforeach
 
     </div>
@@ -91,24 +57,7 @@
             <h1>الأسئلة</h1>
         @endif
         @foreach ($questions as $question)
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse{{ $question->id }}" aria-expanded="true" aria-controls="collapseOne">
-                        {{ $question->title }}
-                    </button>
-                </h2>
-                <div id="collapse{{ $question->id }}" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong> {{ $question->description }}</strong>
-                        <br>
-                        <x-statistics-about-classwork id="{{$question->id}}"/>
-                    </div>
-                    <a class="btn btn-primary"
-                        href="{{ route('classrooms.classworks.show', [$classroom, $question]) }}">عرض</a>
-                </div>
-            </div>
+        <x-classwork-card id="{{$question->id}}"/>
         @endforeach
     </div>
     </div>
