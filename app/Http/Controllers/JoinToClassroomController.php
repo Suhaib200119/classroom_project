@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\JoinToClassroomEvent;
 use App\Models\Classroom;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,21 +28,46 @@ class JoinToClassroomController extends Controller
     }
     public function joinToClassroomStore(Request $request, String $id)
     {
-        $isSaved = DB::table("classrooms_users")->insert([
-            "classroom_id" => $id,
-            "user_id" => Auth::id(),
-            "role" => $request->post("role"),
-            "owner"=>"no"
-        ]);
+        // find id for the owner classroom 
+        $ownerClassroomId=DB::table("classrooms_users")
+        ->where("classroom_id","=",$id)->first("user_id")->user_id;
 
-        if ($isSaved) {
-            $classroom = Classroom::withTrashed()->findOrFail($id);
-            Session::flash("success", "تم إنضمامك إلى الفصل  $classroom->name");
-            JoinToClassroomEvent::dispatch(Auth::user(),$classroom);
-            return redirect()->route("show_classroom", $id);
-        } else {
-            return back();
+        // finding the allow number of student for classroom in the last subscription for the owner classroom by id
+        $allowNumberOfStudent=Subscription::where("user_id","=",$ownerClassroomId)
+        ->orderBy("created_at","DESC")->first()->plan
+        ->features()
+        ->where("code","=","classrooms-students")
+        ->first(["feature_value"])->feature_value;
+        
+
+        //find the number of student in classroom
+        $numberOfStudentInClassroom= DB::table("classrooms_users")
+        ->where("classroom_id","=",$id)
+        ->where("owner","=","no")
+        ->count();
+       
+        // check if the numberOfStudent in classroom less than allow number of student for classroom in the last subscription
+        if($allowNumberOfStudent>$numberOfStudentInClassroom){
+            $isSaved = DB::table("classrooms_users")->insert([
+                "classroom_id" => $id,
+                "user_id" => Auth::id(),
+                "role" => $request->post("role"),
+                "owner"=>"no"
+            ]);
+    
+            if ($isSaved) {
+                $classroom = Classroom::withTrashed()->findOrFail($id);
+                Session::flash("success", "تم إنضمامك إلى الفصل  $classroom->name");
+                JoinToClassroomEvent::dispatch(Auth::user(),$classroom);
+                return redirect()->route("show_classroom", $id);
+            } else {
+                return back();
+            }
+        }else{
+            abort(403,"cannot be joined for the classroom");
         }
+
+        
     }
 
     public function myClassroom(){

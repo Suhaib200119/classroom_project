@@ -21,12 +21,13 @@ class Classroom extends Model
 
     // public function getCoverImageAttribute($value){
     //     if($value){
+            
     //         return asset("uploads/$value");
     //     }else{
     //         return url("https://placehold.co/800x200");
     //     }
     // }
-
+    // url().
 
     public function setSectionAttribute($value)
     {

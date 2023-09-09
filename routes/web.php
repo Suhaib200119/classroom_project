@@ -6,8 +6,11 @@ use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\ClassworkController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\JoinToClassroomController;
+use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\TopicsController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -23,25 +26,36 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::view("/parent","Layouts.parent");
+Route::get('/', [PlanController::class,"index"]);
+// Route::get('/plans', [PlanController::class,"index"]);
+//  Route::view("/parent","Layouts.parent");
 
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // subscriptions routes
+     Route::post('/subscriptions', [SubscriptionsController::class,"store"])->name("add_subscription");
+
+    // payment routes
+    Route::get('/subscriptions/{subscription}/pay', [PaymentsController::class,"create"])->name("payment_create");
+    Route::get('/payments/{subscription_id}/success', [PaymentsController::class,"success"])->name("payment_success");
+    Route::get('/payments/{subscription_id}/cancel', [PaymentsController::class,"cancel"])->name("payment_cancel");
+
+
+
+
     
 Route::get("/classrooms",[ClassroomsController::class,"index"])->name("index_classroom");
-Route::get("/classrooms/create",[ClassroomsController::class,"create"])->name("create_classroom");
-Route::post("/classrooms",[ClassroomsController::class,"store"])->name("store_classroom");
+Route::get("/classrooms/create",[ClassroomsController::class,"create"])->name("create_classroom")->middleware("EnsureUserActiveSubscription");
+Route::post("/classrooms",[ClassroomsController::class,"store"])->name("store_classroom")->middleware("EnsureUserActiveSubscription");
 Route::get("/classrooms/{id}/edit",[ClassroomsController::class,"edit"])->name("edit_classroom");
 Route::put("/classrooms/{id}",[ClassroomsController::class,"update"])->name("update_classroom");
 Route::delete("/classrooms/{id}",[ClassroomsController::class,"destroy"])->name("delete_classroom");

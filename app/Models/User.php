@@ -86,6 +86,10 @@ class User extends Authenticatable
 
     public function routeNotificationForVonage($notification=null): string
     {
-        return "972592369923";//$this->phone_number
+        return $this->phone_number;// "972592369923"
+    }
+
+    public function subscriptions(){
+        return $this->hasMany(Subscription::class);
     }
 }

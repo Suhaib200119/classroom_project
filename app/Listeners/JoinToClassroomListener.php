@@ -24,6 +24,7 @@ class JoinToClassroomListener
      */
     public function handle(JoinToClassroomEvent $event): void
     {
+      // dd(User::find($event->classroom->user_id));
       Notification::send(
         User::find($event->classroom->user_id),
         new JoinToClassroomNotification($event->classroom,$event->user),
