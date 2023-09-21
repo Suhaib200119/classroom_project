@@ -177,12 +177,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
             <!-- Sidebar -->
             <div class="sidebar">
+                @if (Auth::guard('web')->check()==true)
                 <div>
                     <!-- Sidebar user panel (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <img src="{{asset("uploads/".Auth::user()->user_image)}}"
-                                class="img-circle elevation-2" alt="User Image">
+                            <img src="{{ asset('uploads/' . Auth::user()->user_image) }}" class="img-circle elevation-2"
+                                alt="User Image">
                         </div>
                         <div class="info">
                             <a href="" class="d-block">مرحبا {{ Auth::user()->name }}</a>
@@ -190,11 +191,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
 
                     <!-- Sidebar Menu -->
+                    
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
-                            <!-- Add icons to the links using the .nav-icon class
-                 with font-awesome or any other icon font library -->
+    
                             <li class="nav-item has-treeview menu-open">
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fa fa-dashboard"></i>
@@ -206,7 +207,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
 
-                                        <a href="{{ route('index_classroom') }}" class="nav-link {{-- active --}}">
+                                        <a href="{{ route('index_classroom') }}"
+                                            class="nav-link {{-- active --}}">
                                             <i class="fa fa-circle-o nav-icon"></i>
                                             <p>جميع الفصول الدراسية</p>
                                         </a>
@@ -233,7 +235,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                 </ul>
                             </li>
-                          
+
                             <li class="nav-item has-treeview menu-open">
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fa fa-dashboard"></i>
@@ -259,15 +261,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </ul>
                             </li>
                             {{-- start notifications --}}
-                            <x-user-notifications-menu count="10"/>
-                          
+                            <x-user-notifications-menu count="10" />
+
                             {{-- end notifications --}}
-                                <form  class="nav-item"  action="{{route("logout")}}" method="post">
-                                    @csrf
-                                    <button class="btn " style="wieth:100%;color:white" type="submit">logout</button>
-                                </form>
+                            @endif
+                            <form class="nav-item"
+                                @if (Auth::guard('admin')->check()) action="{{ route('logout', 'admin') }}"
+                                @else
+                                action="{{ route('logout', 'web') }}" @endif
+                                method="post">
+                                @csrf
+                                <button class="btn " style="wieth:100%;color:white" type="submit">logout</button>
+                            </form>
                         </ul>
                     </nav>
+                    
                     <!-- /.sidebar-menu -->
                 </div>
             </div>
@@ -338,9 +346,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @yield('js')
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
     <script>
-    
-        var userId={{Auth::id()}}
-
+        var userId = {{ Auth::id() }}
     </script>
-    @vite(["resources/js/app.js"])
+    @vite(['resources/js/app.js'])
 </body>

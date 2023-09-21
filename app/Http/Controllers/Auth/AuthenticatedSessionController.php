@@ -15,34 +15,39 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(String $guard): View
     {
-        return view('auth.login');
+        return view('auth.login',["guard"=>$guard]);
     }
 
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request,String $guard) //: RedirectResponse
     {
-        $request->authenticate();
-
+        $request->authenticate($guard);
         $request->session()->regenerate();
+        return view("Layouts.parent");
+        // if($guard!="admin"){
+        //     return redirect()->intended(route("index_classroom"));
+        // }else{
+        //     return redirect()->route("AdminDash");
+        // }
 
-        return redirect()->intended(route("index_classroom"));
+        
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request,String $guard): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard($guard)->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
-        return redirect()->route("login");
+        
+        return redirect()->route("login",$guard);
     }
 }

@@ -26,7 +26,8 @@
         <a class="p-2 text-dark" href="#">Enterprise</a>
         <a class="p-2 text-dark" href="#">Support</a>
         <a class="p-2 text-dark" href="#">Pricing</a>
-        <a href="{{route("login")}}">go to login page</a>
+        <a href="{{route("login","admin")}}">go to login page [admin]</a>
+        <a href="{{route("login","web")}}">go to login page [user]</a>
         <a href="{{route("register")}}">go to register page</a>
 
       </nav>

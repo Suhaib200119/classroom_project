@@ -14,6 +14,7 @@ use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\TopicsController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Vonage\Meetings\Room;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,17 +27,12 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', [PlanController::class,"index"]);
+Route::get('/', [PlanController::class,"index"])->middleware("guest:web,admin");
 // Route::get('/plans', [PlanController::class,"index"]);
 //  Route::view("/parent","Layouts.parent");
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:web,admin')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -84,6 +80,8 @@ Route::resource("/comments", CommentController::class);
 
 
 Route::post("classworks/{id}/submissions",[SubmissionController::class,"store"])->name("submissions.store");
+
+Route::view("adminDash","adminDash")->name("AdminDash");
 
 
 });
